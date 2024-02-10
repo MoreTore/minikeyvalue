@@ -242,6 +242,7 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 					good = true
 					break
 				}
+				fmt.Printf("not found, request timeout: %s\n", remote)
 			}
 			// if not found on any volume servers, fail before the redirect
 			if !good {
