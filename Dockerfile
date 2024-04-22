@@ -22,11 +22,16 @@ WORKDIR /
 ENV GOPATH /go
 ENV PATH ${PATH}:/mkv
 
+RUN go get -u github.com/google/uuid
+RUN go get -u github.com/syndtr/goleveldb/leveldb
+RUN go get -u github.com/syndtr/goleveldb/leveldb/util
+
 COPY requirements.txt mkv/requirements.txt
 RUN pip3 install --no-cache-dir -r mkv/requirements.txt
 
 COPY mkv volume mkv/
-COPY go.mod go.sum mkv/
 COPY src/*.go mkv/src/
 COPY tools/* mkv/tools/
+RUN chmod +x /mkv/tools/bringup.sh
 WORKDIR /mkv
+ENTRYPOINT ["./tools/bringup.sh"]
