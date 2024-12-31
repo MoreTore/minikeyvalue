@@ -12,7 +12,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
-
+	"time"
 	"github.com/google/uuid"
 	"github.com/syndtr/goleveldb/leveldb/util"
 )
@@ -236,13 +236,15 @@ func (a *App) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			// check the volume servers in a random order
 			good := false
 			for _, vn := range rand.Perm(len(rec.rvolumes)) {
+				start := time.Now()
 				remote = fmt.Sprintf("http://%s%s", rec.rvolumes[vn], key2path(key))
 				found, _ := remote_head(remote, a.voltimeout)
 				if found {
 					good = true
 					break
 				}
-				fmt.Printf("not found, request timeout: %s\n", remote)
+				elapsed := time.Since(start)
+				fmt.Printf("not found, request timeout: %s, elapsed time: %s\n", remote, elapsed)
 			}
 			// if not found on any volume servers, fail before the redirect
 			if !good {

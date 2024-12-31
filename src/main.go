@@ -76,7 +76,7 @@ func main() {
 	protect := flag.Bool("protect", false, "Force UNLINK before DELETE")
 	verbose := flag.Bool("v", false, "Verbose output")
 	md5sum := flag.Bool("md5sum", true, "Calculate and store MD5 checksum of values")
-	voltimeout := flag.Duration("voltimeout", 1*time.Second, "Volume servers must respond to GET/HEAD requests in this amount of time or they are considered down, as duration")
+	voltimeout := flag.Duration("voltimeout", 30*time.Second, "Volume servers must respond to GET/HEAD requests in this amount of time or they are considered down, as duration")
 	flag.Parse()
 
 	volumes := strings.Split(*pvolumes, ",")
